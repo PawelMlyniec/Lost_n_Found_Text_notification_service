@@ -1,0 +1,21 @@
+server:
+  port: 7070
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    client-id: text-message-service
+    properties:
+      schema.registry.url: http://localhost:8081
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+#      properties:
+#        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: tms
+      password: tms
+      database: tms-db
