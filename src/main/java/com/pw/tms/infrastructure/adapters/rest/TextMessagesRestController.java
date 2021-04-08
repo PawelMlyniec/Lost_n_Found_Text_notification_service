@@ -19,7 +19,7 @@ public class TextMessagesRestController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     TextMessageRest sendMessage(@RequestBody TextMessageRest message) {
-        final var sentMessage = facade.sendTextMessage(message.toDomain());
+        var sentMessage = facade.sendTextMessage(message.toDomain());
         return TextMessageRest.fromDomain(sentMessage);
     }
 }
