@@ -4,6 +4,7 @@ option java_package = "com.pw.tms";
 option java_multiple_files = true;
 
 message TextMessageSentProto {
+
     required string messageId = 1;
     required string sourceUserId = 2;
     required string targetUserId = 3;
