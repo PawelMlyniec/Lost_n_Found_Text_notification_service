@@ -10,8 +10,6 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
-#      properties:
-#        interceptor.classes: io.confluent.monitoring.clients.interceptor.MonitoringProducerInterceptor
   data:
     mongodb:
       host: localhost

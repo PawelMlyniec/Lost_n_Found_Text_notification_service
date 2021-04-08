@@ -12,7 +12,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 @Builder(toBuilder = true, setterPrefix = "with")
 public class TextMessageRest {
 
-    @Nullable private final String id;
+    @JsonProperty @Nullable private final String textMessageId;
     @JsonProperty private final String sourceUserId;
     @JsonProperty private final String targetUserId;
     @JsonProperty private final String content;
@@ -20,7 +20,7 @@ public class TextMessageRest {
     public TextMessage toDomain() {
 
         return TextMessage.builder()
-            .withId(id)
+            .withId(textMessageId)
             .withSourceUserId(sourceUserId)
             .withTargetUserId(targetUserId)
             .withContent(content)
@@ -30,7 +30,7 @@ public class TextMessageRest {
     public static TextMessageRest fromDomain(TextMessage domain) {
 
         return TextMessageRest.builder()
-            .withId(domain.id().raw())
+            .withTextMessageId(domain.id().raw())
             .withSourceUserId(domain.sourceUserId())
             .withTargetUserId(domain.targetUserId())
             .withContent(domain.content())
