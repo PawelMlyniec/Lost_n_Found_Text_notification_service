@@ -63,7 +63,6 @@ dependencies {
     // Confluent
     implementation("io.confluent", "kafka-protobuf-serializer", "5.5.1")
     implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
-//    implementation("io.confluent", "kafka-schema-registry-parent", "6.0.1")
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
     // Swagger
