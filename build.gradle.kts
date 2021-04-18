@@ -73,3 +73,18 @@ dependencies {
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
 }
+
+tasks {
+
+    bootJar {
+        archiveFileName.set("text-message-service.jar")
+        dependsOn("generateProto")
+    }
+
+    register<Exec>("dockerBuild") {
+        group = "build"
+        description = "Builds Docker Image"
+        dependsOn("bootJar")
+        commandLine("docker", "build", "-t", "text-message-service", "--target", "fast", "--build-arg", "PROFILE=dev", ".")
+    }
+}
