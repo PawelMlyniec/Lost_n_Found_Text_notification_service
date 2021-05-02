@@ -1,30 +1,19 @@
 server:
   port: 7070
-management:
-  server:
-    port: 7071
-  endpoints:
-    web:
-      exposure:
-        include: health, prometheus
+
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: kafka-cluster-kafka-brokers.kafka:9092
     client-id: text-message-service
     properties:
-      schema.registry.url: http://localhost:8081
+      schema.registry.url: http://schema-registry-svc.kafka:8081
       value.subject.name.strategy: io.confluent.kafka.serializers.subject.TopicRecordNameStrategy
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9090/oauth/.well-known/jwks.json
   data:
     mongodb:
-      host: localhost
+      host: mongodb-svc.mongo
       port: 27017
       username: tms
       password: tms

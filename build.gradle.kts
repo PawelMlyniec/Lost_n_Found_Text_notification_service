@@ -4,7 +4,6 @@ plugins {
     id("org.springframework.boot") version "2.4.4"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("com.google.protobuf") version "0.8.15"
-    id("org.openapi.generator") version "5.1.0"
     id("org.checkerframework") version "0.5.17"
     id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.2.0"
     java
@@ -72,6 +71,10 @@ dependencies {
     implementation("io.confluent", "kafka-schema-registry-client", "5.5.1")
     implementation("io.confluent", "monitoring-interceptors", "5.5.1")
 
+    // Metrics
+    implementation("org.springframework.boot", "spring-boot-starter-actuator", "2.4.0")
+    implementation("io.micrometer", "micrometer-registry-prometheus", "latest.release")
+
     // Swagger
     implementation("io.swagger", "swagger-annotations", "1.6.2")
     implementation("org.openapitools", "jackson-databind-nullable", "0.2.1")
@@ -84,6 +87,7 @@ dependencies {
 tasks {
 
     bootJar {
+        mainClass.set("com.pw.tms.TextMessageService")
         archiveFileName.set("text-message-service.jar")
         dependsOn("generateProto")
     }
