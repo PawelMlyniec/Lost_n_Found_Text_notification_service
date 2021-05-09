@@ -96,6 +96,6 @@ tasks {
         group = "build"
         description = "Builds Docker Image"
         dependsOn("bootJar")
-        commandLine("docker", "build", "-t", "text-message-service", "--target", "PROFILE=dev", ".")
+        commandLine("docker", "build", "-t", "text-message-service", "PROFILE=dev", ".")
     }
 }
