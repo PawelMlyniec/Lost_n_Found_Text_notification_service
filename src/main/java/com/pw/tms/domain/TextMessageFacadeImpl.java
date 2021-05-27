@@ -4,8 +4,12 @@ import com.pw.tms.TextMessageSentProto;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import com.pw.tms.domain.ports.outgoing.EventPublisher;
 import com.pw.tms.domain.ports.outgoing.TextMessageRepository;
+import com.pw.tms.infrastructure.adapters.rest.TextMessageRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 class TextMessageFacadeImpl implements TextMessageFacade {
@@ -26,6 +30,21 @@ class TextMessageFacadeImpl implements TextMessageFacade {
         var persistedMessage = textMessageRepository.save(message);
         fireTextMessageSent(persistedMessage);
         return persistedMessage;
+    }
+
+    @Override
+    public List<TextMessage> getAllMessagesForTargetUserId(TextMessageId id) {
+
+        var allMessagesForTargetUserIdList = new ArrayList<TextMessage>();
+        var allMessagesList = textMessageRepository.findAll();
+
+        for(TextMessage m : allMessagesList) {
+            if(TextMessageId.of(m.targetUserId()).equals(id)) {
+                allMessagesForTargetUserIdList.add(m);
+            }
+        }
+
+        return allMessagesForTargetUserIdList;
     }
 
     private void fireTextMessageSent(TextMessage message) {

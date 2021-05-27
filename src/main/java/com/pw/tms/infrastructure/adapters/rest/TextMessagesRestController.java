@@ -1,9 +1,13 @@
 package com.pw.tms.infrastructure.adapters.rest;
 
+import com.pw.tms.domain.TextMessage;
+import com.pw.tms.domain.TextMessageId;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/textMessages")
@@ -23,4 +27,18 @@ public class TextMessagesRestController {
         var sentMessage = facade.sendTextMessage(message.toDomain());
         return TextMessageRest.fromDomain(sentMessage);
     }
+
+    @GetMapping("/{id}")
+    public List<TextMessageRest> getAllMessagesForTargetUserId(@PathVariable String id) {
+
+        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id));
+        var foundMessagesRestList = new ArrayList<TextMessageRest>();
+
+        for(TextMessage m : foundMessagesList) {
+            foundMessagesRestList.add(TextMessageRest.fromDomain(m));
+        }
+
+        return foundMessagesRestList;
+    }
+
 }
