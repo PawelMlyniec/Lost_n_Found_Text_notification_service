@@ -12,6 +12,7 @@ public class TextMessage {
     private final String id;
     private final String sourceUserId;
     private final String targetUserId;
+    private final String subject;
     private final String content;
 
     public TextMessageId id() {

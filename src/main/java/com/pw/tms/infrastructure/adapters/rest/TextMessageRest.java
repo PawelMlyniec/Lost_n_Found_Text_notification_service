@@ -15,6 +15,7 @@ public class TextMessageRest {
     @JsonProperty @Nullable private final String textMessageId;
     @JsonProperty private final String sourceUserId;
     @JsonProperty private final String targetUserId;
+    @JsonProperty private final String subject;
     @JsonProperty private final String content;
 
     public TextMessage toDomain() {
@@ -23,6 +24,7 @@ public class TextMessageRest {
             .withId(textMessageId)
             .withSourceUserId(sourceUserId)
             .withTargetUserId(targetUserId)
+            .withSubject(subject)
             .withContent(content)
             .build();
     }
@@ -33,6 +35,7 @@ public class TextMessageRest {
             .withTextMessageId(domain.id().raw())
             .withSourceUserId(domain.sourceUserId())
             .withTargetUserId(domain.targetUserId())
+            .withSubject(domain.subject())
             .withContent(domain.content())
             .build();
     }

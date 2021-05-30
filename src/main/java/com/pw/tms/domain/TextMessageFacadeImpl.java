@@ -4,7 +4,6 @@ import com.pw.tms.TextMessageSentProto;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import com.pw.tms.domain.ports.outgoing.EventPublisher;
 import com.pw.tms.domain.ports.outgoing.TextMessageRepository;
-import com.pw.tms.infrastructure.adapters.rest.TextMessageRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
