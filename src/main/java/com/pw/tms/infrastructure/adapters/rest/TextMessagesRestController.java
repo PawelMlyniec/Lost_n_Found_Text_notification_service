@@ -29,9 +29,54 @@ public class TextMessagesRestController {
     }
 
     @GetMapping("/{id}")
+    public Integer getUnreadMessagesCountForTargetUserId(@PathVariable String id) {
+
+        var unreadMessagesCount = 0;
+        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id)); // TODO: nie TextMessageId.of(id) tylko string
+
+        for(TextMessage m : foundMessagesList) {
+            if(!m.isRead()) {
+                unreadMessagesCount++;
+            }
+        }
+
+        return unreadMessagesCount;
+    }
+
+    @GetMapping("/{id}/messages")
     public List<TextMessageRest> getAllMessagesForTargetUserId(@PathVariable String id) {
 
         var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id));
+        var foundMessagesRestList = new ArrayList<TextMessageRest>();
+
+        for(TextMessage m : foundMessagesList) {
+            foundMessagesRestList.add(TextMessageRest.fromDomain(m));
+        }
+
+        return foundMessagesRestList;
+    }
+
+    @GetMapping("/{id}/chats")
+    public List<TextMessageRest> getNewestMessagesForTargetUserId(@PathVariable String id) {
+
+        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id));
+        var foundMessagesRestList = new ArrayList<TextMessageRest>();
+        var sourceUsersIds = new ArrayList<String>();
+
+        for(TextMessage m : foundMessagesList) {
+            if(!sourceUsersIds.contains(m.sourceUserId())) {
+                sourceUsersIds.add(m.sourceUserId());
+                foundMessagesRestList.add(TextMessageRest.fromDomain(m));
+            }
+        }
+
+        return foundMessagesRestList;
+    }
+
+    @GetMapping("/{sourceUserId}/{targetUserId}")
+    public List<TextMessageRest> getAllMessagesForUsersIds(@PathVariable String sourceUserId, @PathVariable String targetUserId) {
+
+        var foundMessagesList = facade.getAllMessagesForUsersIds(TextMessageId.of(sourceUserId), TextMessageId.of(targetUserId));
         var foundMessagesRestList = new ArrayList<TextMessageRest>();
 
         for(TextMessage m : foundMessagesList) {

@@ -7,6 +7,7 @@ import com.pw.tms.domain.ports.outgoing.TextMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Override
     public TextMessage sendTextMessage(TextMessage message) {
 
-        var persistedMessage = textMessageRepository.save(message);
+        var persistedMessage = textMessageRepository.save(message.withIsRead(false).withSentAt(Instant.now()));
         fireTextMessageSent(persistedMessage);
         return persistedMessage;
     }
@@ -36,6 +37,7 @@ class TextMessageFacadeImpl implements TextMessageFacade {
 
         var allMessagesForTargetUserIdList = new ArrayList<TextMessage>();
         var allMessagesList = textMessageRepository.findAll();
+        // TODO: nie wyciagac wszystkich, tylko te ktore potrzebne (JPA)
 
         for(TextMessage m : allMessagesList) {
             if(TextMessageId.of(m.targetUserId()).equals(id)) {
@@ -46,6 +48,24 @@ class TextMessageFacadeImpl implements TextMessageFacade {
         return allMessagesForTargetUserIdList;
     }
 
+    @Override
+    public List<TextMessage> getAllMessagesForUsersIds(TextMessageId sourceUserId, TextMessageId targetUserId) {
+
+        var allMessagesForUsersIdsList = new ArrayList<TextMessage>();
+        var allMessagesList = textMessageRepository.findAll();
+        // TODO: nie wyciagac wszystkich, tylko te ktore potrzebne (JPA)
+
+        for(TextMessage m : allMessagesList) {
+            if(TextMessageId.of(m.sourceUserId()).equals(sourceUserId) && TextMessageId.of(m.targetUserId()).equals(targetUserId)) {
+                allMessagesForUsersIdsList.add(m);
+                m.isRead(true);
+                textMessageRepository.save(m);
+            }
+        }
+
+        return allMessagesForUsersIdsList;
+    }
+
     private void fireTextMessageSent(TextMessage message) {
 
         var event = TextMessageSentProto.newBuilder()
@@ -53,6 +73,8 @@ class TextMessageFacadeImpl implements TextMessageFacade {
             .setSourceUserId(message.sourceUserId())
             .setTargetUserId(message.targetUserId())
             .setContent(message.content())
+            .setIsRead(message.isRead())
+            .setSentAt(message.sentAt().toEpochMilli())
             .build();
         eventPublisher.publishDomainEvent(message.sourceUserId(), event);
     }

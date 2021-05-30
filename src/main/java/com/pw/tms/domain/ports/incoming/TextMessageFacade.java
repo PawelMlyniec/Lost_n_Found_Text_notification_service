@@ -9,4 +9,6 @@ public interface TextMessageFacade {
     TextMessage sendTextMessage(final TextMessage textMessage);
 
     List<TextMessage> getAllMessagesForTargetUserId(TextMessageId id);
+
+    List<TextMessage> getAllMessagesForUsersIds(TextMessageId sourceUserId, TextMessageId targetUserId);
 }
