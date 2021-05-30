@@ -4,5 +4,7 @@ import com.google.protobuf.Message;
 
 public interface EventPublisher {
 
-    <T extends Message> void publishDomainEvent(String userId, T event);
+    <T extends Message> void publishProtobufEvent(String userId, T event);
+
+    void publishJsonEvent(String userId, Object event);
 }

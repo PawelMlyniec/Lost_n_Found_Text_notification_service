@@ -36,6 +36,6 @@ class TextMessageFacadeImpl implements TextMessageFacade {
             .setTargetUserId(message.targetUserId())
             .setContent(message.content())
             .build();
-        eventPublisher.publishDomainEvent(message.sourceUserId(), event);
+        eventPublisher.publishProtobufEvent(message.sourceUserId(), event);
     }
 }
