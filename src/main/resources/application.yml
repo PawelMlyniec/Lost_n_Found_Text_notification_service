@@ -29,3 +29,9 @@ spring:
       username: tms
       password: tms
       database: tms-db
+#  datasource:
+#    url: jdbc:mongodb://localhost:27017/tms-db
+#    username: tms
+#    password: tms
+#    hikari:
+#      auto-commit: false

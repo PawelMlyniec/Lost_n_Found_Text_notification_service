@@ -6,8 +6,23 @@ plugins {
     id("com.google.protobuf") version "0.8.15"
     id("org.checkerframework") version "0.5.17"
     id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.2.0"
+    id("java-library")
     java
     idea
+}
+
+idea {
+    module {
+        sourceDirs = sourceDirs + file("generated/")
+        generatedSourceDirs = generatedSourceDirs + file("generated/")
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom
+            annotationProcessor
+    }
 }
 
 group = "com.pw"
@@ -47,9 +62,9 @@ protobuf {
 dependencies {
     // Spring
     implementation("org.springframework.boot", "spring-boot-starter-web")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     annotationProcessor("org.springframework.boot", "spring-boot-configuration-processor")
-    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
+//    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
 
     // Security
     implementation("org.springframework.boot", "spring-boot-starter-security")
@@ -84,6 +99,20 @@ dependencies {
     // Tests
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
+
+    // Querydsl
+    implementation("com.querydsl:querydsl-jpa")
+    implementation("com.querydsl:querydsl-apt")
+    compile("com.querydsl:querydsl-jpa:4.4.0")
+    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
+    testCompile("com.querydsl:querydsl-jpa:4.4.0")
+    testAnnotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
+
+    // Querydsl
+//    implementation("com.querydsl", "querydsl-core", "4.4.0")
+//    implementation("com.querydsl", "querydsl-jpa", "4.4.0")
+//    implementation("com.querydsl:querydsl-mongodb:4.4.0")
+//    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:morphia")
 }
 
 tasks {

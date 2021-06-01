@@ -34,46 +34,49 @@ class TextMessageFacadeImpl implements TextMessageFacade {
 
     @Override
     public Long getUnreadMessagesCountForTargetUserId(String targetUserId) {
-        return textMessageRepository.countByIsReadAndTargetUserId(false, targetUserId);
+        //return textMessageRepository.countByIsReadAndTargetUserId(false, targetUserId);
+        return null;
     }
 
     @Override
     public List<TextMessage> getAllMessagesBetweenUsers(String firstUserId, String secondUserId) {
 
-        var textMessagesList = textMessageRepository.findBySourceUserIdAndTargetUserId(firstUserId, secondUserId);
-        textMessagesList.addAll(textMessageRepository.findBySourceUserIdAndTargetUserId(secondUserId, firstUserId));
-
-        // TODO: sortowanie listy wiadomosci po timestampie??
-
-        for(TextMessage m : textMessagesList) {
-            if(!m.isRead()) {
-                m.isRead(true);
-                textMessageRepository.save(m);
-            }
-        }
-
-        return textMessagesList;
+//        var textMessagesList = textMessageRepository.findBySourceUserIdAndTargetUserId(firstUserId, secondUserId);
+//        textMessagesList.addAll(textMessageRepository.findBySourceUserIdAndTargetUserId(secondUserId, firstUserId));
+//
+//        // TODO: sortowanie listy wiadomosci po timestampie??
+//
+//        for(TextMessage m : textMessagesList) {
+//            if(!m.isRead()) {
+//                m.isRead(true);
+//                textMessageRepository.save(m);
+//            }
+//        }
+//
+//        return textMessagesList;
+        return null;
     }
 
     @Override
     public List<TextMessage> getAllChatsForUserId(String userId) {
 
-        var allTextMessagesList = textMessageRepository.findByTargetUserId(userId);
-        allTextMessagesList.addAll(textMessageRepository.findBySourceUserId(userId));
-
-        var otherUsersIdToMostRecentMessageMap = new HashMap<String, TextMessage>();
-
-        for(TextMessage m : allTextMessagesList) {
-            var otherUsersId = m.targetUserId().equals(userId) ? m.sourceUserId() : m.targetUserId();
-            if(!otherUsersIdToMostRecentMessageMap.containsKey(otherUsersId)) {
-                otherUsersIdToMostRecentMessageMap.put(otherUsersId, m);
-            }
-            else if(m.sentAt().isAfter(otherUsersIdToMostRecentMessageMap.get(otherUsersId).sentAt())) {
-                otherUsersIdToMostRecentMessageMap.replace(otherUsersId, m);
-            }
-        }
-
-        return (List<TextMessage>) otherUsersIdToMostRecentMessageMap.values();
+//        var allTextMessagesList = textMessageRepository.findByTargetUserId(userId);
+//        allTextMessagesList.addAll(textMessageRepository.findBySourceUserId(userId));
+//
+//        var otherUsersIdToMostRecentMessageMap = new HashMap<String, TextMessage>();
+//
+//        for(TextMessage m : allTextMessagesList) {
+//            var otherUsersId = m.targetUserId().equals(userId) ? m.sourceUserId() : m.targetUserId();
+//            if(!otherUsersIdToMostRecentMessageMap.containsKey(otherUsersId)) {
+//                otherUsersIdToMostRecentMessageMap.put(otherUsersId, m);
+//            }
+//            else if(m.sentAt().isAfter(otherUsersIdToMostRecentMessageMap.get(otherUsersId).sentAt())) {
+//                otherUsersIdToMostRecentMessageMap.replace(otherUsersId, m);
+//            }
+//        }
+//
+//        return (List<TextMessage>) otherUsersIdToMostRecentMessageMap.values();
+        return null;
     }
 
     private void fireTextMessageSent(TextMessage message) {
