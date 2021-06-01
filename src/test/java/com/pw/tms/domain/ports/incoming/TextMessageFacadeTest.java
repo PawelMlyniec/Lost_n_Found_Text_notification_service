@@ -22,13 +22,13 @@ class TextMessageFacadeTest {
     @Test
     void shouldSendMultipleTextMessages() throws InterruptedException, ExecutionException {
 
-        var numThreads = 1;
+        var numThreads = 2;
         var executorService = Executors.newFixedThreadPool(numThreads);
         var tasks = new ArrayList<Future<?>>();
 
         for (int taskNo = 0; taskNo < numThreads; taskNo++) {
             Future<?> task = executorService.submit(() -> {
-                for (long i = 0; i < 1_000_000; i++) {
+                for (long i = 0; i < 1_000_000 / numThreads; i++) {
                     var message = TextMessage.builder()
                         .withId("123")
                         .withSourceUserId(Long.toString(i))
@@ -36,7 +36,6 @@ class TextMessageFacadeTest {
                         .withContent("&".repeat(50 * 1024)) // 50 kB
                         .build();
                     textMessageFacade.sendTextMessage(message);
-//                    Threads.sleep(0, 100_000);
                 }
             });
             tasks.add(task);

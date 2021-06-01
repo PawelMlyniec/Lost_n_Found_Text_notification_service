@@ -1,31 +1,28 @@
 package com.pw.tms.domain;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.pw.tms.TextMessageSentProto;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import com.pw.tms.domain.ports.outgoing.EventPublisher;
-import com.pw.tms.domain.ports.outgoing.TextMessageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 class TextMessageFacadeImpl implements TextMessageFacade {
 
-    private final TextMessageRepository textMessageRepository;
     private final EventPublisher eventPublisher;
 
     @Autowired
-    TextMessageFacadeImpl(TextMessageRepository textMessageRepository, EventPublisher eventPublisher) {
+    TextMessageFacadeImpl(EventPublisher eventPublisher) {
 
-        this.textMessageRepository = textMessageRepository;
         this.eventPublisher = eventPublisher;
     }
 
     @Override
     public TextMessage sendTextMessage(TextMessage message) {
 
-        var persistedMessage = textMessageRepository.save(message);
-        fireTextMessageSent(persistedMessage);
-        return persistedMessage;
+        fireTextMessageSent(message);
+        return message;
     }
 
     private void fireTextMessageSent(TextMessage message) {

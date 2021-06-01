@@ -57,7 +57,7 @@ dependencies {
     implementation("org.springframework.kafka", "spring-kafka")
 
     // MongoDB
-    implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
+//    implementation("org.springframework.boot", "spring-boot-starter-data-mongodb")
 
     // Lombok
     compileOnly("org.projectlombok", "lombok")
