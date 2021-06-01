@@ -1,7 +1,6 @@
 package com.pw.tms.infrastructure.adapters.rest;
 
 import com.pw.tms.domain.TextMessage;
-import com.pw.tms.domain.TextMessageId;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,24 +28,14 @@ public class TextMessagesRestController {
     }
 
     @GetMapping("/{id}")
-    public Integer getUnreadMessagesCountForTargetUserId(@PathVariable String id) {
-
-        var unreadMessagesCount = 0;
-        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id)); // TODO: nie TextMessageId.of(id) tylko string
-
-        for(TextMessage m : foundMessagesList) {
-            if(!m.isRead()) {
-                unreadMessagesCount++;
-            }
-        }
-
-        return unreadMessagesCount;
+    public Long getUnreadMessagesCountForTargetUserId(@PathVariable String id) {
+        return facade.getUnreadMessagesCountForTargetUserId(id);
     }
 
-    @GetMapping("/{id}/messages")
-    public List<TextMessageRest> getAllMessagesForTargetUserId(@PathVariable String id) {
+    @GetMapping("/{id}/chats")
+    public List<TextMessageRest> getAllChatsForUserId(@PathVariable String id) {
 
-        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id));
+        var foundMessagesList = facade.getAllChatsForUserId(id);
         var foundMessagesRestList = new ArrayList<TextMessageRest>();
 
         for(TextMessage m : foundMessagesList) {
@@ -56,27 +45,10 @@ public class TextMessagesRestController {
         return foundMessagesRestList;
     }
 
-    @GetMapping("/{id}/chats")
-    public List<TextMessageRest> getNewestMessagesForTargetUserId(@PathVariable String id) {
+    @GetMapping("/{firstUserId}/{secondUserId}")
+    public List<TextMessageRest> getAllMessagesBetweenUsers(@PathVariable String firstUserId, @PathVariable String secondUserId) {
 
-        var foundMessagesList = facade.getAllMessagesForTargetUserId(TextMessageId.of(id));
-        var foundMessagesRestList = new ArrayList<TextMessageRest>();
-        var sourceUsersIds = new ArrayList<String>();
-
-        for(TextMessage m : foundMessagesList) {
-            if(!sourceUsersIds.contains(m.sourceUserId())) {
-                sourceUsersIds.add(m.sourceUserId());
-                foundMessagesRestList.add(TextMessageRest.fromDomain(m));
-            }
-        }
-
-        return foundMessagesRestList;
-    }
-
-    @GetMapping("/{sourceUserId}/{targetUserId}")
-    public List<TextMessageRest> getAllMessagesForUsersIds(@PathVariable String sourceUserId, @PathVariable String targetUserId) {
-
-        var foundMessagesList = facade.getAllMessagesForUsersIds(TextMessageId.of(sourceUserId), TextMessageId.of(targetUserId));
+        var foundMessagesList = facade.getAllMessagesBetweenUsers(firstUserId, secondUserId);
         var foundMessagesRestList = new ArrayList<TextMessageRest>();
 
         for(TextMessage m : foundMessagesList) {

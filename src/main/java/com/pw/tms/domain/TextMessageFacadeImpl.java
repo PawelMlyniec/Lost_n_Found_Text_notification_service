@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -33,37 +33,47 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     }
 
     @Override
-    public List<TextMessage> getAllMessagesForTargetUserId(TextMessageId id) {
-
-        var allMessagesForTargetUserIdList = new ArrayList<TextMessage>();
-        var allMessagesList = textMessageRepository.findAll();
-        // TODO: nie wyciagac wszystkich, tylko te ktore potrzebne (JPA)
-
-        for(TextMessage m : allMessagesList) {
-            if(TextMessageId.of(m.targetUserId()).equals(id)) {
-                allMessagesForTargetUserIdList.add(m);
-            }
-        }
-
-        return allMessagesForTargetUserIdList;
+    public Long getUnreadMessagesCountForTargetUserId(String targetUserId) {
+        return textMessageRepository.countByIsReadAndTargetUserId(false, targetUserId);
     }
 
     @Override
-    public List<TextMessage> getAllMessagesForUsersIds(TextMessageId sourceUserId, TextMessageId targetUserId) {
+    public List<TextMessage> getAllMessagesBetweenUsers(String firstUserId, String secondUserId) {
 
-        var allMessagesForUsersIdsList = new ArrayList<TextMessage>();
-        var allMessagesList = textMessageRepository.findAll();
-        // TODO: nie wyciagac wszystkich, tylko te ktore potrzebne (JPA)
+        var textMessagesList = textMessageRepository.findBySourceUserIdAndTargetUserId(firstUserId, secondUserId);
+        textMessagesList.addAll(textMessageRepository.findBySourceUserIdAndTargetUserId(secondUserId, firstUserId));
 
-        for(TextMessage m : allMessagesList) {
-            if(TextMessageId.of(m.sourceUserId()).equals(sourceUserId) && TextMessageId.of(m.targetUserId()).equals(targetUserId)) {
-                allMessagesForUsersIdsList.add(m);
+        // TODO: sortowanie listy wiadomosci po timestampie??
+
+        for(TextMessage m : textMessagesList) {
+            if(!m.isRead()) {
                 m.isRead(true);
                 textMessageRepository.save(m);
             }
         }
 
-        return allMessagesForUsersIdsList;
+        return textMessagesList;
+    }
+
+    @Override
+    public List<TextMessage> getAllChatsForUserId(String userId) {
+
+        var allTextMessagesList = textMessageRepository.findByTargetUserId(userId);
+        allTextMessagesList.addAll(textMessageRepository.findBySourceUserId(userId));
+
+        var otherUsersIdToMostRecentMessageMap = new HashMap<String, TextMessage>();
+
+        for(TextMessage m : allTextMessagesList) {
+            var otherUsersId = m.targetUserId().equals(userId) ? m.sourceUserId() : m.targetUserId();
+            if(!otherUsersIdToMostRecentMessageMap.containsKey(otherUsersId)) {
+                otherUsersIdToMostRecentMessageMap.put(otherUsersId, m);
+            }
+            else if(m.sentAt().isAfter(otherUsersIdToMostRecentMessageMap.get(otherUsersId).sentAt())) {
+                otherUsersIdToMostRecentMessageMap.replace(otherUsersId, m);
+            }
+        }
+
+        return (List<TextMessage>) otherUsersIdToMostRecentMessageMap.values();
     }
 
     private void fireTextMessageSent(TextMessage message) {

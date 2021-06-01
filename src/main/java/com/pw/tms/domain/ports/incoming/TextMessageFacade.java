@@ -1,14 +1,15 @@
 package com.pw.tms.domain.ports.incoming;
 
 import com.pw.tms.domain.TextMessage;
-import com.pw.tms.domain.TextMessageId;
 import java.util.List;
 
 public interface TextMessageFacade {
 
     TextMessage sendTextMessage(final TextMessage textMessage);
 
-    List<TextMessage> getAllMessagesForTargetUserId(TextMessageId id);
+    Long getUnreadMessagesCountForTargetUserId(String targetUserId);
 
-    List<TextMessage> getAllMessagesForUsersIds(TextMessageId sourceUserId, TextMessageId targetUserId);
+    List<TextMessage> getAllMessagesBetweenUsers(String firstUserId, String secondUserId);
+
+    List<TextMessage> getAllChatsForUserId(String userId);
 }
