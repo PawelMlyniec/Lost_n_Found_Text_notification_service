@@ -1,12 +1,14 @@
 package com.pw.tms.infrastructure.adapters.rest;
 
-import com.pw.tms.domain.TextMessage;
 import com.pw.tms.domain.ports.incoming.TextMessageFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/textMessages")
@@ -27,35 +29,23 @@ public class TextMessagesRestController {
         return TextMessageRest.fromDomain(sentMessage);
     }
 
-    @GetMapping("/{id}")
-    public Long getUnreadMessagesCountForTargetUserId(@PathVariable String id) {
+    @GetMapping("/unread")
+    public Long getUnreadMessagesCountForTargetUserId(@RequestParam String id) {
         return facade.getUnreadMessagesCountForTargetUserId(id);
     }
 
-    @GetMapping("/{id}/chats")
-    public List<TextMessageRest> getAllChatsForUserId(@PathVariable String id) {
+    @GetMapping("/chats")
+    public List<TextMessageRest> getAllChatsForUserId(@RequestParam String id) {
 
-        var foundMessagesList = facade.getAllChatsForUserId(id);
-        var foundMessagesRestList = new ArrayList<TextMessageRest>();
-
-        for(TextMessage m : foundMessagesList) {
-            foundMessagesRestList.add(TextMessageRest.fromDomain(m));
-        }
-
-        return foundMessagesRestList;
+        return facade.getAllChatsForUserId(id)
+                .stream().map(TextMessageRest::fromDomain).collect(Collectors.toList());
     }
 
-    @GetMapping("/{firstUserId}/{secondUserId}")
-    public List<TextMessageRest> getAllMessagesBetweenUsers(@PathVariable String firstUserId, @PathVariable String secondUserId) {
+    @GetMapping
+    public Page<TextMessageRest> getAllMessagesBetweenUsers(@RequestParam String firstUserId, @RequestParam String secondUserId, Pageable pageable) {
 
-        var foundMessagesList = facade.getAllMessagesBetweenUsers(firstUserId, secondUserId);
-        var foundMessagesRestList = new ArrayList<TextMessageRest>();
-
-        for(TextMessage m : foundMessagesList) {
-            foundMessagesRestList.add(TextMessageRest.fromDomain(m));
-        }
-
-        return foundMessagesRestList;
+        return facade.getAllMessagesBetweenUsers(firstUserId, secondUserId, pageable)
+                .map(TextMessageRest::fromDomain);
     }
 
 }

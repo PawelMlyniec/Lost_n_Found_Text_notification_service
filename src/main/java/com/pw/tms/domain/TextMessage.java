@@ -14,6 +14,7 @@ public class TextMessage {
     private final String id;
     private final String sourceUserId;
     private final String targetUserId;
+    private final String chatId;
     private final String content;
     private Boolean isRead;
     private Instant sentAt;
