@@ -62,9 +62,7 @@ protobuf {
 dependencies {
     // Spring
     implementation("org.springframework.boot", "spring-boot-starter-web")
-//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     annotationProcessor("org.springframework.boot", "spring-boot-configuration-processor")
-//    annotationProcessor("org.springframework.boot:spring-boot-starter-data-jpa")
 
     // Security
     implementation("org.springframework.boot", "spring-boot-starter-security")
@@ -107,12 +105,6 @@ dependencies {
     annotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
     testCompile("com.querydsl:querydsl-jpa:4.4.0")
     testAnnotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
-
-    // Querydsl
-//    implementation("com.querydsl", "querydsl-core", "4.4.0")
-//    implementation("com.querydsl", "querydsl-jpa", "4.4.0")
-//    implementation("com.querydsl:querydsl-mongodb:4.4.0")
-//    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:morphia")
 }
 
 tasks {

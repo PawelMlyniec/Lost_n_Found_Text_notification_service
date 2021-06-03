@@ -7,14 +7,3 @@ import org.springframework.data.repository.CrudRepository;
 public interface TextMessageRepository extends CrudRepository<TextMessage, String>, QuerydslPredicateExecutor<TextMessage> {
 
 }
-
-//public interface TextMessageRepository extends JpaRepository<TextMessage, String> {
-//
-//    List<TextMessage> findByTargetUserId(String targetUserId);
-//
-//    List<TextMessage> findBySourceUserId(String sourceUserId);
-//
-//    List<TextMessage> findBySourceUserIdAndTargetUserId(String sourceUserId, String targetUserId);
-//
-//    Long countByIsReadAndTargetUserId(boolean isRead, String targetUserId);
-//}
