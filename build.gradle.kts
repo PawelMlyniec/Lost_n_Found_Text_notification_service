@@ -53,6 +53,17 @@ sourceSets {
     }
 }
 
+schemaRegistry {
+    url.set(System.getenv("SCHEMA_REGISTRY_URL") ?: "http://localhost:9099/")
+    credentials {
+        username.set(System.getenv("SCHEMA_REGISTRY_USERNAME") ?: "registry-user")
+        password.set(System.getenv("SCHEMA_REGISTRY_PASSWORD") ?: "<password>")
+    }
+    register {
+        subject("lrs-lost-reports-proto-TextMessageSentProto", "src/main/proto/com/pw/tms/TextMessageSentProto.proto", "PROTOBUF")
+    }
+}
+
 protobuf {
     protoc {
         artifact = "com.google.protobuf:protoc:3.6.1"
