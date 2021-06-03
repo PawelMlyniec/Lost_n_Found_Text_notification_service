@@ -9,4 +9,6 @@ message TextMessageSentProto {
     required string sourceUserId = 2;
     required string targetUserId = 3;
     required string content = 4;
+    required bool isRead = 5;
+    required uint64 sentAt = 6;
 }
