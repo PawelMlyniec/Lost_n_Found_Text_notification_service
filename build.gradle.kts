@@ -60,7 +60,7 @@ schemaRegistry {
         password.set(System.getenv("SCHEMA_REGISTRY_PASSWORD") ?: "<password>")
     }
     register {
-        subject("lrs-lost-reports-proto-TextMessageSentProto", "src/main/proto/com/pw/tms/TextMessageSent.proto", "PROTOBUF")
+        subject("tms-text-messages-proto-TextMessageSentProto", "src/main/proto/com/pw/tms/TextMessageSent.proto", "PROTOBUF")
     }
 }
 
