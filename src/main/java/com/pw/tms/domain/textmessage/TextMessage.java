@@ -4,11 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.With;
 
+import javax.persistence.Entity;
 import java.time.Instant;
 
 @Data
 @With
 @Builder(toBuilder = true, setterPrefix = "with")
+@Entity
 public class TextMessage {
 
     private final String id;

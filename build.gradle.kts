@@ -7,15 +7,8 @@ plugins {
     id("org.checkerframework") version "0.5.17"
     id("com.github.imflog.kafka-schema-registry-gradle-plugin") version "1.2.0"
     id("java-library")
-    java
+    `java-library`
     idea
-}
-
-idea {
-    module {
-        sourceDirs = sourceDirs + file("generated/")
-        generatedSourceDirs = generatedSourceDirs + file("generated/")
-    }
 }
 
 configurations {
@@ -109,13 +102,12 @@ dependencies {
     testImplementation("org.springframework.boot", "spring-boot-starter-test")
     testImplementation("org.springframework.kafka", "spring-kafka-test")
 
-    // Querydsl
-    implementation("com.querydsl:querydsl-jpa")
-    implementation("com.querydsl:querydsl-apt")
-    compile("com.querydsl:querydsl-jpa:4.4.0")
-    annotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
-    testCompile("com.querydsl:querydsl-jpa:4.4.0")
-    testAnnotationProcessor("com.querydsl:querydsl-apt:4.4.0:jpa")
+    // QueryDSL
+    api("com.querydsl", "querydsl-core", "4.2.1")
+    api("javax.persistence", "javax.persistence-api", "2.2")
+    annotationProcessor("com.querydsl:querydsl-apt:4.2.1:jpa")
+    annotationProcessor("javax.persistence:javax.persistence-api")
+    annotationProcessor("javax.annotation:javax.annotation-api")
 }
 
 tasks {
