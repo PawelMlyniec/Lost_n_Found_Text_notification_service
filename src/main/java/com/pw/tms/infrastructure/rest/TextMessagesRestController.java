@@ -1,6 +1,6 @@
-package com.pw.tms.infrastructure.adapters.rest;
+package com.pw.tms.infrastructure.rest;
 
-import com.pw.tms.domain.ports.incoming.TextMessageFacade;
+import com.pw.tms.domain.TextMessageFacade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,6 +1,6 @@
-package com.pw.tms.domain.ports.outgoing;
+package com.pw.tms.domain.textmessage;
 
-import com.pw.tms.domain.TextMessage;
+import com.pw.tms.domain.textmessage.TextMessage;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.CrudRepository;
 

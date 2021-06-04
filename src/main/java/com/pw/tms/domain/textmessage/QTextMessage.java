@@ -1,4 +1,4 @@
-package com.pw.tms.domain;
+package com.pw.tms.domain.textmessage;
 
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.PathMetadata;

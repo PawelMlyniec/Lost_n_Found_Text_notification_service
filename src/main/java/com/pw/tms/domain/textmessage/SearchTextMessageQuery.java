@@ -1,4 +1,4 @@
-package com.pw.tms.domain;
+package com.pw.tms.domain.textmessage;
 
 import lombok.Builder;
 import lombok.Getter;

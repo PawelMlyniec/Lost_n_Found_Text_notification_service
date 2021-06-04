@@ -1,4 +1,4 @@
-package com.pw.tms.domain.ports.outgoing;
+package com.pw.tms.domain.textmessage;
 
 import com.google.protobuf.Message;
 

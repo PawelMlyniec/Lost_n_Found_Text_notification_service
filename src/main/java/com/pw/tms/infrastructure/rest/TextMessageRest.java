@@ -1,7 +1,7 @@
-package com.pw.tms.infrastructure.adapters.rest;
+package com.pw.tms.infrastructure.rest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.pw.tms.domain.TextMessage;
+import com.pw.tms.domain.textmessage.TextMessage;
 import lombok.Builder;
 import lombok.Data;
 import lombok.With;

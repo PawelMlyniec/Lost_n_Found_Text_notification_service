@@ -1,4 +1,4 @@
-package com.pw.tms.infrastructure.adapters.security;
+package com.pw.tms.application;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

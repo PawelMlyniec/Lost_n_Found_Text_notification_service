@@ -1,4 +1,4 @@
-package com.pw.tms.domain;
+package com.pw.tms.domain.textmessage;
 
 import com.querydsl.core.BooleanBuilder;
 import org.jetbrains.annotations.NotNull;

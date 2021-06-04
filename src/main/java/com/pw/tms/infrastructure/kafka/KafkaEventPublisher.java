@@ -1,7 +1,7 @@
-package com.pw.tms.infrastructure.adapters.kafka;
+package com.pw.tms.infrastructure.kafka;
 
 import com.google.protobuf.Message;
-import com.pw.tms.domain.ports.outgoing.EventPublisher;
+import com.pw.tms.domain.textmessage.EventPublisher;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;

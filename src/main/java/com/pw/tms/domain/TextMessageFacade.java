@@ -1,6 +1,6 @@
-package com.pw.tms.domain.ports.incoming;
+package com.pw.tms.domain;
 
-import com.pw.tms.domain.TextMessage;
+import com.pw.tms.domain.textmessage.TextMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
