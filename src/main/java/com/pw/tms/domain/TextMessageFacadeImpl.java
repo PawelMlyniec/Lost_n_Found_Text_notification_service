@@ -30,22 +30,23 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Override
     public TextMessage sendTextMessage(TextMessage message) {
 
-        var authenticatedUserId = UserOperation.getAuthenticatedUserId();
-        if (!authenticatedUserId.equals(message.sourceUserId()))
-            throw new ResponseStatusException(UNAUTHORIZED);
-        var persistedMessage = textMessageRepository.save(message.withIsRead(false).withSentAt(Instant.now()).withChatId(createChatId(message)));
+        var userId = UserOperation.getAuthenticatedUserId();
+        var persistedMessage = textMessageRepository.save(
+            message
+                .withSourceUserId(userId)
+                .withIsRead(false)
+                .withSentAt(Instant.now())
+                .withChatId(createChatId(message)));
         fireTextMessageSent(persistedMessage);
         return persistedMessage;
     }
 
     @Override
-    public Long getUnreadMessagesCountForTargetUserId(String targetUserId) {
+    public Long getUnreadMessagesCountForTargetUserId() {
 
-        var authenticatedUserId = UserOperation.getAuthenticatedUserId();
-        if (!authenticatedUserId.equals(targetUserId))
-            throw new ResponseStatusException(UNAUTHORIZED);
+        var userId = UserOperation.getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
-                .targetUserId(targetUserId)
+                .targetUserId(userId)
                 .isRead(false)
                 .build();
 
@@ -57,11 +58,9 @@ class TextMessageFacadeImpl implements TextMessageFacade {
 
     @Override
     @Transactional
-    public Page<TextMessage> getAllMessagesBetweenUsers(String firstUserId, String secondUserId, Pageable pageable) {
+    public Page<TextMessage> getAllMessagesBetweenUsers(String secondUserId, Pageable pageable) {
 
-        var authenticatedUserId = UserOperation.getAuthenticatedUserId();
-        if (!authenticatedUserId.equals(firstUserId))
-            throw new ResponseStatusException(UNAUTHORIZED);
+        var firstUserId = UserOperation.getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
             .firstUserId(firstUserId)
             .secondUserId(secondUserId)
@@ -79,11 +78,9 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     }
 
     @Override
-    public List<TextMessage> getAllChatsForUserId(String userId) {
+    public List<TextMessage> getAllChatsForUserId() {
 
-        var authenticatedUserId = UserOperation.getAuthenticatedUserId();
-        if (!authenticatedUserId.equals(userId))
-            throw new ResponseStatusException(UNAUTHORIZED);
+        var userId = UserOperation.getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
                 .firstUserId(userId)
                 .build();

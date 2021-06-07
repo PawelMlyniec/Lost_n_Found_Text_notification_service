@@ -10,9 +10,9 @@ public interface TextMessageFacade {
 
     TextMessage sendTextMessage(final TextMessage textMessage);
 
-    Long getUnreadMessagesCountForTargetUserId(String targetUserId);
+    Long getUnreadMessagesCountForTargetUserId();
 
-    Page<TextMessage> getAllMessagesBetweenUsers(String firstUserId, String secondUserId, Pageable pageable);
+    Page<TextMessage> getAllMessagesBetweenUsers(String secondUserId, Pageable pageable);
 
-    List<TextMessage> getAllChatsForUserId(String userId);
+    List<TextMessage> getAllChatsForUserId();
 }
