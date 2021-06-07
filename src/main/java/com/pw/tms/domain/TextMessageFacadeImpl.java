@@ -10,14 +10,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.http.HttpStatus.UNAUTHORIZED;
+import static com.pw.tms.domain.UserOperation.getAuthenticatedUserId;
 
 @Service
 @RequiredArgsConstructor
@@ -30,10 +29,9 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Override
     public TextMessage sendTextMessage(TextMessage message) {
 
-        var userId = UserOperation.getAuthenticatedUserId();
         var persistedMessage = textMessageRepository.save(
             message
-                .withSourceUserId(userId)
+                .withSourceUserId(message.sourceUserId())
                 .withIsRead(false)
                 .withSentAt(Instant.now())
                 .withChatId(createChatId(message)));
@@ -44,7 +42,7 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Override
     public Long getUnreadMessagesCountForTargetUserId() {
 
-        var userId = UserOperation.getAuthenticatedUserId();
+        var userId = getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
                 .targetUserId(userId)
                 .isRead(false)
@@ -60,7 +58,7 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Transactional
     public Page<TextMessage> getAllMessagesBetweenUsers(String secondUserId, Pageable pageable) {
 
-        var firstUserId = UserOperation.getAuthenticatedUserId();
+        var firstUserId = getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
             .firstUserId(firstUserId)
             .secondUserId(secondUserId)
@@ -80,7 +78,7 @@ class TextMessageFacadeImpl implements TextMessageFacade {
     @Override
     public List<TextMessage> getAllChatsForUserId() {
 
-        var userId = UserOperation.getAuthenticatedUserId();
+        var userId = getAuthenticatedUserId();
         var query = SearchTextMessageQuery.builder()
                 .firstUserId(userId)
                 .build();

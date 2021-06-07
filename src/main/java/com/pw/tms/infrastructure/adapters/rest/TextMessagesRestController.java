@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.pw.tms.domain.UserOperation.getAuthenticatedUserId;
+
 @RestController
 @RequestMapping("/textMessages")
 public class TextMessagesRestController {
@@ -25,7 +27,9 @@ public class TextMessagesRestController {
     @ResponseStatus(HttpStatus.CREATED)
     TextMessageRest sendMessage(@RequestBody TextMessageRest message) {
 
-        var sentMessage = facade.sendTextMessage(message.toDomain());
+        var sentMessage = facade.sendTextMessage(message
+            .withSourceUserId(getAuthenticatedUserId())
+            .toDomain());
         return TextMessageRest.fromDomain(sentMessage);
     }
 
