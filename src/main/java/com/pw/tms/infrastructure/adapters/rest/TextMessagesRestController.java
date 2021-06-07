@@ -30,21 +30,21 @@ public class TextMessagesRestController {
     }
 
     @GetMapping("/unread")
-    public Long getUnreadMessagesCountForTargetUserId(@RequestParam String id) {
-        return facade.getUnreadMessagesCountForTargetUserId(id);
+    public Long getUnreadMessagesCountForTargetUserId() {
+        return facade.getUnreadMessagesCountForTargetUserId();
     }
 
     @GetMapping("/chats")
-    public List<TextMessageRest> getAllChatsForUserId(@RequestParam String id) {
+    public List<TextMessageRest> getAllChatsForUserId() {
 
-        return facade.getAllChatsForUserId(id)
+        return facade.getAllChatsForUserId()
                 .stream().map(TextMessageRest::fromDomain).collect(Collectors.toList());
     }
 
     @GetMapping
-    public Page<TextMessageRest> getAllMessagesBetweenUsers(@RequestParam String firstUserId, @RequestParam String secondUserId, Pageable pageable) {
+    public Page<TextMessageRest> getAllMessagesBetweenUsers(@RequestParam String secondUserId, Pageable pageable) {
 
-        return facade.getAllMessagesBetweenUsers(firstUserId, secondUserId, pageable)
+        return facade.getAllMessagesBetweenUsers(secondUserId, pageable)
                 .map(TextMessageRest::fromDomain);
     }
 
