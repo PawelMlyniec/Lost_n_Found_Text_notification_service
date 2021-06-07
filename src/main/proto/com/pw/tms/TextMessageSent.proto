@@ -1,14 +1,14 @@
-syntax = "proto2";
+syntax = "proto3";
 
 option java_package = "com.pw.tms";
 option java_multiple_files = true;
 
 message TextMessageSentProto {
 
-    required string messageId = 1;
-    required string sourceUserId = 2;
-    required string targetUserId = 3;
-    required string content = 4;
-    required bool isRead = 5;
-    required uint64 sentAt = 6;
+    string messageId = 1;
+    string sourceUserId = 2;
+    string targetUserId = 3;
+    string content = 4;
+    bool isRead = 5;
+    uint64 sentAt = 6;
 }
